@@ -51,25 +51,31 @@ def get_gemini_response(prompt, pdf_content, input_text):
         st.error("Error: No PDF content available.")
         
 # Function to parse resume
-def parse_resume(uploaded_file):
-    # Implement resume parsing logic here
-    # Example: Extract text from PDF resume
-    resume_text = ""
-    with open(uploaded_file.name, "rb") as f:
-        reader = PyPDF2.PdfFileReader(f)
-        for page_num in range(reader.numPages):
-            page = reader.getPage(page_num)
-            resume_text += page.extractText()
-    return resume_text
+# def parse_resume(prompt, pdf_content, input_text):
+#     resume_text = ""
+#     if uploaded_file is not None:
+#         try:
+#             model = genai.GenerativeModel('gemini-pro-vision')
+#             response = model.generate_content([input_text, pdf_content[0], prompt])
+#             response_text = response.text
+#             resume_text = response_text.split("Resume Text:")[1].strip()
+#         except Exception as e:
+#             st.error(f"Error parsing resume: {e}")
+#     else:
+#         st.warning("Please upload a PDF file.")
+#     return resume_text
+
+
+
 
 # Function to screen resumes
-def screen_resume(resume_text, job_description):
-    # Implement resume screening logic here
-    # Example: Check for keywords in resume text
-    if "Python" in resume_text and "Data Science" in resume_text:
-        return "Qualified"
-    else:
-        return "Not Qualified"
+# def screen_resume(resume_text, job_description):
+#     # Implement resume screening logic here
+#     # Example: Check for keywords in resume text
+#     if "Python" in resume_text and "Data Science" in resume_text:
+#         return "Qualified"
+#     else:
+#         return "Not Qualified"
 
 # Function to get match percentage
 def get_match_percentage(prompt, pdf_content, input_text):
@@ -102,6 +108,8 @@ if uploaded_file is not None:
 submit1 = st.button("Evaluate Resume")
 submit2 = st.button("Improve Skills")
 submit3 = st.button("Match Percentage")
+# submit4 = st.button("Parse Resume")
+
 
 # Prompts
 input_prompt1 = """
@@ -123,6 +131,13 @@ You are an skilled ATS (Applicant Tracking System) scanner with a deep understan
 your task is to evaluate the resume against the provided job description. give me the percentage of match if the resume matches
 the job description. First the output should come as percentage and then keywords missing and last final thoughts.
 """
+
+# input_prompt4 = """
+# You are a professional career coach with a background in data science, your task is to provide constructive feedback to the candidate
+# on how they can improve their resume to better align with the job description.
+# in bullets key point for the resume improvement.
+# and then further tell me where the candidate can improve their at what section in particlar.
+# """
 
 # Button actions
 if submit1:
@@ -157,3 +172,13 @@ elif submit3:
         st.write(response)
     else:
         st.write("Please uplaod the resume")
+# elif submit4:
+#     if uploaded_file is not None:
+#         pdf_content = convert_pdf_to_images(uploaded_file)
+
+#         resume_text = parse_resume(input_prompt2, pdf_content, input_text)
+#         # Display parsed resume text
+#         st.subheader("Parsed Resume Text")
+#         st.write(resume_text)
+#     else:
+#         st.write("Please upload the resume.")
